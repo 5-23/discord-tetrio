@@ -8,4 +8,4 @@ async def sign_up(inter: Interaction, name: str, id: str):
     
 
 
-cli.run(open("token").read())
+cli.run(open(".token").read())
