@@ -1,0 +1,156 @@
+{
+    "success": true,
+    "data": {
+        "records": {
+            "40l": {
+                "record": {
+                    "_id": "643eaf81155cea70d8356659",
+                    "endcontext": {
+                        "seed": 195925516,
+                        "lines": 40,
+                        "level_lines": 0,
+                        "level_lines_needed": 1,
+                        "inputs": 463,
+                        "holds": 15,
+                        "time": {
+                            "start": 0,
+                            "zero": false,
+                            "locked": false,
+                            "prev": 0,
+                            "frameoffset": 0
+                        },
+                        "score": 12564,
+                        "zenlevel": 1,
+                        "zenprogress": 0,
+                        "level": 1,
+                        "combo": 3,
+                        "currentcombopower": null,
+                        "topcombo": 3,
+                        "btb": 0,
+                        "topbtb": 4,
+                        "currentbtbchainpower": 0,
+                        "tspins": 0,
+                        "piecesplaced": 101,
+                        "clears": {
+                            "singles": 5,
+                            "doubles": 2,
+                            "triples": 1,
+                            "quads": 7,
+                            "realtspins": 0,
+                            "minitspins": 0,
+                            "minitspinsingles": 0,
+                            "tspinsingles": 0,
+                            "minitspindoubles": 0,
+                            "tspindoubles": 0,
+                            "tspintriples": 0,
+                            "tspinquads": 0,
+                            "allclear": 0
+                        },
+                        "garbage": {
+                            "sent": 0,
+                            "received": 0,
+                            "attack": 0,
+                            "cleared": 0
+                        },
+                        "kills": 0,
+                        "finesse": {
+                            "combo": 4,
+                            "faults": 123,
+                            "perfectpieces": 50
+                        },
+                        "finalTime": 87763.33333333333,
+                        "gametype": "40l"
+                    },
+                    "ismulti": false,
+                    "replayid": "643eaf81155cea70d8356657",
+                    "stream": "40l_userbest_640a9251b507939b0a6ad379",
+                    "ts": "2023-04-18T14:56:01.433Z",
+                    "user": {
+                        "_id": "640a9251b507939b0a6ad379",
+                        "username": "5-23"
+                    }
+                },
+                "rank": null
+            },
+            "blitz": {
+                "record": {
+                    "_id": "6444ece3c0fad3659d8fabb3",
+                    "endcontext": {
+                        "seed": 2013365823,
+                        "lines": 45,
+                        "level_lines": 10,
+                        "level_lines_needed": 13,
+                        "inputs": 649,
+                        "holds": 35,
+                        "time": {
+                            "start": 0,
+                            "zero": false,
+                            "locked": false,
+                            "prev": 0,
+                            "frameoffset": 0
+                        },
+                        "score": 123470,
+                        "zenlevel": 1,
+                        "zenprogress": 0,
+                        "level": 6,
+                        "combo": 0,
+                        "currentcombopower": 0,
+                        "topcombo": 6,
+                        "btb": 1,
+                        "topbtb": 11,
+                        "currentbtbchainpower": 0,
+                        "tspins": 17,
+                        "piecesplaced": 128,
+                        "clears": {
+                            "singles": 5,
+                            "doubles": 2,
+                            "triples": 1,
+                            "quads": 0,
+                            "realtspins": 0,
+                            "minitspins": 0,
+                            "minitspinsingles": 0,
+                            "tspinsingles": 1,
+                            "minitspindoubles": 0,
+                            "tspindoubles": 16,
+                            "tspintriples": 0,
+                            "tspinquads": 0,
+                            "allclear": 0
+                        },
+                        "garbage": {
+                            "sent": 0,
+                            "received": 0,
+                            "attack": 0,
+                            "cleared": 0
+                        },
+                        "kills": 0,
+                        "finesse": {
+                            "combo": 1,
+                            "faults": 114,
+                            "perfectpieces": 83
+                        },
+                        "finalTime": 120000,
+                        "gametype": "blitz"
+                    },
+                    "ismulti": false,
+                    "replayid": "6444ece3c0fad3659d8fabb1",
+                    "stream": "blitz_userbest_640a9251b507939b0a6ad379",
+                    "ts": "2023-04-23T08:31:31.518Z",
+                    "user": {
+                        "_id": "640a9251b507939b0a6ad379",
+                        "username": "5-23"
+                    }
+                },
+                "rank": null
+            }
+        },
+        "zen": {
+            "level": 35,
+            "score": 1345440
+        }
+    },
+    "cache": {
+        "status": "miss",
+        "cached_at": 1682430455312,
+        "cached_until": 1682431355312
+    }
+}
