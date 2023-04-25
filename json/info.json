@@ -1,0 +1,55 @@
+{
+    "577266050769485844": {
+        "_id": "640a9251b507939b0a6ad379",
+        "username": "5-23",
+        "role": "user",
+        "ts": "2023-03-10T02:13:37.989Z",
+        "badges": [
+            {
+                "id": "20tsd",
+                "label": "Cleared 40 LINES with only T-Spin Doubles",
+                "group": null,
+                "ts": "2023-04-21T12:21:17.777Z"
+            }
+        ],
+        "xp": 1048986,
+        "gamesplayed": 1206,
+        "gameswon": 657,
+        "gametime": 337441.4242222224,
+        "country": "KR",
+        "supporter": true,
+        "supporter_tier": 1,
+        "verified": false,
+        "league": {
+            "gamesplayed": 370,
+            "gameswon": 198,
+            "rating": 12157.331232742998,
+            "glicko": 1485.6427078195848,
+            "rd": 60.855504129462176,
+            "rank": "a",
+            "bestrank": "a",
+            "apm": 27.05,
+            "pps": 1.04,
+            "vs": 50.4,
+            "decaying": false,
+            "standing": 23218,
+            "percentile": 0.44022450179184286,
+            "standing_local": 1867,
+            "prev_rank": "a-",
+            "prev_at": 24259,
+            "next_rank": "a+",
+            "next_at": 20041,
+            "percentile_rank": "a"
+        },
+        "avatar_revision": 1681029103193,
+        "banner_revision": 1681029145626,
+        "connections": {
+            "discord": {
+                "id": "577266050769485844",
+                "username": "5-23dev#9999"
+            }
+        },
+        "friend_count": 13,
+        "nick": "유한별"
+    }
+}
