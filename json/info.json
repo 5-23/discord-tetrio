@@ -1,39 +1,8 @@
 {
-    "577266050769485844": {
-        "name": "5-23",
-        "nick": "5-23",
-        "discord_name": "5-23dev#9999",
-        "friend": 13,
-        "gametime": 337442,
-        "gameplayed": 1206,
-        "gamewon": 657,
-        "badges": [
-            {
-                "title": "20tsd",
-                "description": "Cleared 40 LINES with only T-Spin Doubles"
-            }
-        ],
-        "league": {
-            "rank": "a",
-            "bast_rank": "a",
-            "rating": 12158,
-            "apm": 27.05,
-            "pps": 1.04,
-            "vs": 50.4
-        },
-        "40l": {
-            "time": 88,
-            "point": null,
-            "ts": "2023-04-18T14:56:01.433Z",
-            "ok": true
-        },
-        "blitz": {
-            "time": null,
-            "point": 123470,
-            "ts": "2023-04-23T08:31:31.518Z",
-            "ok": true
-        },
-        "avatar_img": "https://tetr.io/user-content/avatars/640a9251b507939b0a6ad379.jpg?rv=1681029103193",
-        "banner_img": "https://tetr.io/user-content/banners/640a9251b507939b0a6ad379.jpg?rv=0"
+    "sunrint": {
+        "rating": 0,
+        "members": [
+            577266050769485844
+        ]
     }
 }

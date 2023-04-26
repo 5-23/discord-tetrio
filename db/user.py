@@ -42,7 +42,7 @@ class User:
 
                     "league": {
                         "rank":       data["league"]["rank"],
-                        "bast_rank":  data["league"]["bestrank"],
+                        "best_rank":  data["league"].get("bestrank", "z"),
                         "rating":     math.ceil(data["league"]["rating"]),
                         "apm":        data["league"]["apm"],
                         "pps":        data["league"]["pps"],
@@ -52,21 +52,21 @@ class User:
                     "40l": {
                         "time": math.ceil(records.get("40l", {}).get("record", {}).get("endcontext", {}).get("finalTime", 0)/1000.),
                         "point": None,
-                        "ts": records.get("40l", {}).get("record", {}).get("ts", 0),
+                        "ts": records.get("40l", {}).get("record", {}).get("ts", "0.0").split(".")[0],
                         "ok": records.get("40l", 0) != 0,
                     },
 
                     "blitz": {
                         "time": None,
                         "point": records.get("blitz", {}).get("record", {}).get("endcontext", {}).get("score", 0),
-                        "ts": records.get("blitz", {}).get("record", {}).get("ts", 0),
+                        "ts": records.get("blitz", {}).get("record", {}).get("ts", "0.0").split(".")[0],
                         "ok": records.get("blitz", 0) != 0,
                     },
 
 
 
-                    "avatar_img": f"https://tetr.io/user-content/avatars/{data['_id']}.jpg?rv={data['avatar_revision']}",
-                    "banner_img": f"https://tetr.io/user-content/banners/{data['_id']}.jpg?rv={data['banner_revision']}",
+                    "avatar_img": f"https://tetr.io/user-content/avatars/{data['_id']}.jpg?rv={data.get('avatar_revision', '')}",
+                    "banner_img": f"https://tetr.io/user-content/banners/{data['_id']}.jpg?rv={data.get('banner_revision', '')}",
                 }
 
                 
@@ -96,7 +96,7 @@ class User:
 
             league       = tetrio.League(
                 rank          = data["league"]["rank"],
-                bast_rank     = data["league"]["bast_rank"],
+                best_rank     = data["league"]["best_rank"],
                 rating        = data["league"]["rating"],
                 apm           = data["league"]["apm"],
                 pps           = data["league"]["pps"],

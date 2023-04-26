@@ -1,11 +1,11 @@
 from nextcord import *
 import db
 import cmp
+from cmp import emojis
 INTENTS = Intents().all()
 cli = Client(intents = INTENTS)
 
-from datetime import datetime
-import time, math
+import datetime, time, math
 
 @cli.event
 async def on_ready():
@@ -14,7 +14,16 @@ async def on_ready():
 
 @cli.slash_command(name="가입", description="가입을 함")
 async def sign_up(inter: Interaction):
-    await inter.response.send_modal(cmp.modal.signUp())
+    await inter.response.send_modal(cmp.modals.SignUp())
+
+@cli.slash_command(name="세로고침", description="자신의 테트리오 정보를 다시 불러옴")
+async def refresh(inter: Interaction):
+    await inter.response.send_message("> 세로고침중")
+    try: before = db.User().get(id=inter.user.id)
+    except: return await inter.edit_original_message(content = "> 가입 먼저해야함")
+    
+    db.User().push(inter.user.id, before.nick, before.name)
+    await inter.edit_original_message(content = "> 세로고침 완료")
 
 @cli.slash_command(name="정보", description="테트리오 정보를 불러옴")
 async def info(inter: Interaction):
@@ -26,18 +35,55 @@ async def info(inter: Interaction):
     embeds = [Embed(title = f"{data.nick}(`{data.name}`)", color=0xa1dba5)]
     embeds[0].set_thumbnail(url=data.avatar_img)
     if data.name == data.nick: embeds[0].title = data.name
-    embeds[0].add_field(name="이긴수/게임한수", value=f"{data.gamewon}/{data.gameplayed}")
+    embeds[0].add_field(name="이김/플레이", value=f"{data.gamewon}/{data.gameplayed}", inline = False)
     
     if data.l40.ok:
         embeds.append(Embed(title = f"40 Line", color=0xa1dba5))
-        embeds[len(embeds)-1].add_field(name="시간", value=f"{int(data.l40.time/60)}분 {int(data.l40.time%60)}초")
-        # embeds[len(embeds)-1].add_field(name="~전에 완료", value=f"{time.mktime(datetime.strptime(data.l40.ts, '%Y-%m %H:%M:%S.%R').timetuple())}")
+        embeds[len(embeds)-1].add_field(name="시간", value=f"{int(data.l40.time/60)}분 {int(data.l40.time%60)}초", inline = False)
+        ts = int(time.mktime(datetime.datetime.strptime(data.l40.ts, "%Y-%m-%dT%H:%M:%S").timetuple()))
+        embeds[len(embeds)-1].add_field(name="~전에 완료", value=f"<t:{ts}:R>", inline = False)
+    
     if data.blitz.ok:
         embeds.append(Embed(title = f"Blitz", color=0xa1dba5))
         embeds[len(embeds)-1].add_field(name="점수", value=f"{data.blitz.point}점")
-        # embeds[len(embeds)-1].add_field(name="~전에 완료", value=f"{time.mktime(datetime.strptime(data.l40.ts, '%Y-%m %H:%M:%S.%R').timetuple())}")
+        ts = int(time.mktime(datetime.datetime.strptime(data.l40.ts, "%Y-%m-%dT%H:%M:%S").timetuple()))
+        embeds[len(embeds)-1].add_field(name="~전에 완료", value=f"<t:{ts}:R>", inline = False)
+    
+
+    if len(data.badges):
+        description = ""
+        for badge in data.badges:
+            description += f"{emojis.badges.get(badge.title, badge.title)} "
+        embeds.append(Embed(title = f"Badge", color=0xa1dba5, description = description))
+    
+
+    if data.league.rank != 'z':
+        embeds.append(Embed(title = f"Tetra League", color=0xa1dba5))
+        embeds[len(embeds)-1].add_field(name="레이팅", value=f"**{data.league.rating}**TR", inline = False)
+        embeds[len(embeds)-1].add_field(name="랭크", value=f"{emojis.ranks[data.league.rank]}")
+        embeds[len(embeds)-1].add_field(name="최고랭크", value=f"{emojis.ranks[data.league.best_rank]}")
+        embeds[len(embeds)-1].add_field(name="apm (Attack Per Minute)", value=f"{data.league.apm}", inline = False)
+        embeds[len(embeds)-1].add_field(name="pps (Pieces Per Seconds)", value=f"{data.league.pps}")
+        embeds[len(embeds)-1].add_field(name="vs (VerSus)", value=f"{data.league.vs}")
+    
+    
+    
     embeds[len(embeds)-1].set_image(url=data.banner_img)
 
     await inter.followup.send(embeds = embeds)
+
+
+@cli.slash_command(name="클랜생성", description="클랜을 생성함")
+async def sign_up(inter: Interaction):
+    await inter.response.send_modal(cmp.modals.Clan("", ""))
+
+
+
+
+
+
+
+
+
 
 cli.run(open(".token").read())
