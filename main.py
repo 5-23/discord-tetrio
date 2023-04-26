@@ -45,7 +45,7 @@ async def info(inter: Interaction):
     
     if data.blitz.ok:
         embeds.append(Embed(title = f"Blitz", color=0xa1dba5))
-        embeds[len(embeds)-1].add_field(name="점수", value=f"{data.blitz.point}점")
+        embeds[len(embeds)-1].add_field(name="점수", value=f"{data.blitz.point:,}점")
         ts = int(time.mktime(datetime.datetime.strptime(data.l40.ts, "%Y-%m-%dT%H:%M:%S").timetuple()))
         embeds[len(embeds)-1].add_field(name="~전에 완료", value=f"<t:{ts}:R>", inline = False)
     
@@ -130,7 +130,7 @@ async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", 
         
         if option == "blitz":
             ok = user.blitz.ok
-            value = (-user.blitz.point, f"{user.blitz.point}점", user)
+            value = (-user.blitz.point, f"{user.blitz.point:,}점", user)
 
 
         if ok:
