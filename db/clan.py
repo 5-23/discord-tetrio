@@ -25,7 +25,7 @@ class Clan:
         if self.file.get(name, 0): return (500, "이미있는 이름")
         if pw == "":
             pw = None
-            
+
         self.file[name] = {
             "name": name,
             "des": des,
@@ -43,8 +43,8 @@ class Clan:
         
         return (200, "성공")
 
-    def get(self, id: int) -> tetrio.Clan:
-        data = self.file[str(id)]
+    def get(self, name: int) -> tetrio.Clan:
+        data = self.file[str(name)]
         return tetrio.Clan(
             name    = data["name"],
             des     = data["des"],
