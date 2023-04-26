@@ -115,19 +115,36 @@ async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", 
     if data == None:
         return await inter.response.send_message(embed = Embed(title = "300(Clan Error)", description="클랜에 가입해야함", color = 0xff7033))
     
+    await inter.response.defer()
+
     members = db.Clan().get(data).members
     
     arr = []
-
+    embed = Embed(title=f"[{data}]클랜 {option} 랭킹", color=0xa1dba5)
     for member in members:
         user = db.User().get(member)
-        # ok = 
-        # if user.
-        # TODO
-        # TODO
-        # TODO
-        # TODO
-        # TODO
+        if option == "40l":
+            ok = user.l40.ok
+            value = (user.l40.time, f"{int(user.l40.time/60)}분 {int(user.l40.time%60)}초", user)
+        
+        
+        if option == "blitz":
+            ok = user.blitz.ok
+            value = (-user.blitz.point, f"{user.blitz.point}점", user)
+
+
+        if ok:
+            arr.append(value)
+    
+    arr.sort(key=lambda x: x[0])
+    
+    i = 1
+
+    for rank in arr[0:5]:
+        embed.add_field(name=f"{i}등 | {rank[2].nick}({rank[2].name})", value=rank[1], inline=False)
+        i += 1
+
+    await inter.followup.send(embed = embed, view=cmp.buttons.RankBtn(arr))
 
 
 
