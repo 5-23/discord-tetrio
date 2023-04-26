@@ -16,14 +16,14 @@ async def on_ready():
 async def sign_up(inter: Interaction):
     await inter.response.send_modal(cmp.modals.SignUp())
 
-@cli.slash_command(name="세로고침", description="자신의 테트리오 정보를 다시 불러옴")
+@cli.slash_command(name="새로고침", description="자신의 테트리오 정보를 다시 불러옴")
 async def refresh(inter: Interaction):
-    await inter.response.send_message("> 세로고침중")
+    await inter.response.send_message("> 새로고침중")
     try: before = db.User().get(id=inter.user.id)
     except: return await inter.edit_original_message(content = "> 가입 먼저해야함")
     
     db.User().push(inter.user.id, before.nick, before.name)
-    await inter.edit_original_message(content = "> 세로고침 완료")
+    await inter.edit_original_message(content = "> 새로고침 완료")
 
 @cli.slash_command(name="정보", description="테트리오 정보를 불러옴")
 async def info(inter: Interaction):
@@ -75,11 +75,33 @@ async def info(inter: Interaction):
 
 @cli.slash_command(name="클랜생성", description="클랜을 생성함")
 async def sign_up(inter: Interaction):
-    await inter.response.send_modal(cmp.modals.Clan("", ""))
+    try: data = db.User().get(inter.user.id)
+    except: return await inter.response.send_message(embed = Embed(title = "404(Not Founded)", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    if data.clan != None:
+        return await inter.response.send_message("이미 클랜에 있음")
+    await inter.response.send_modal(cmp.modals.Clan("", "", "", ""))
 
+@cli.slash_command(name="클랜참가", description="클랜에 참가를 요청함")
+async def join_clan(inter: Interaction, name: str = SlashOption(name="클랜명", description="참가 할 클랜명")):
+    try: db.User().get(inter.user.id)
+    except: return await inter.response.send_message(embed = Embed(title = "404(Not Founded)", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    
+    clan = db.Clan().get(name)
+    if clan.pw == None:
+        db.User().add_clan(inter.user.id, clan)
+        await inter.response.send_message(embed = Embed(title = f"성공{emojis.verified}", description=f"[{clan.name}]에 가입을 성공함", color=0xa1dba5))
+    else:
+        await inter.response.send_modal(cmp.modals.SignUpClan(clan))        
 
+@join_clan.on_autocomplete("name")
+async def join_clan_auto(inter: Interaction, name: str):
+    auto = ["입력"]
+    if name != "":
+        auto = [i for i in db.Clan().file if name.lower() in i]
+        if auto == []:
+            auto = ["검색결과 없음"]
 
-
+    await inter.response.send_autocomplete(auto)
 
 
 

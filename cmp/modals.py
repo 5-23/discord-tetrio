@@ -1,5 +1,6 @@
 from nextcord import *
 import db
+import tetrio
 from typing import Union
 from .emojis import *
 from .buttons import *
@@ -24,18 +25,37 @@ class SignUp(ui.Modal):
 
 
 class Clan(ui.Modal):
-    def __init__(self, name: str, rating: Union[int, str]) -> None:
+    def __init__(self, name: str, des: str, rating: Union[int, str], pw: str) -> None:
         super().__init__(title = "클랜만들기")
 
         self.name = ui.TextInput(label="이름", min_length=1, max_length=30, placeholder = "이에ㅔㅔㅔ", default_value=name)
+        self.des = ui.TextInput(label="설명", min_length=1, placeholder="대충 엄청난 클랜", default_value=des, style=TextInputStyle.paragraph)
         
         self.rating = ui.TextInput(label="레이팅 조건", min_length=1, placeholder="0", default_value=rating)
+        self.pw = ui.TextInput(label="비밀번호(선택)", min_length=1, default_value=pw, required=False, placeholder="123456789")
 
         self.add_item(self.name)
+        self.add_item(self.des)
         self.add_item(self.rating)
+        self.add_item(self.pw)
 
     async def callback(self, inter: Interaction) -> None:
-        status = db.Clan().push(inter.user.id, self.name.value, self.rating.value)
+        status = db.Clan().push(inter.user.id, self.name.value, self.des.value, self.rating.value, self.pw.value)
         if status[0] == 200:
             return await inter.response.send_message(embed = Embed(title = "생성 성공!", description = f"[{self.name.value}]클랜을 성공적으로 만듬"))
-        await inter.response.send_message(embed=Embed(title = f"실패({status[0]})", description=status[1]), view = ReClan(inter.user.id, self.name.value, self.rating.value))
+        await inter.response.send_message(embed=Embed(title = f"실패({status[0]})", description=status[1]), view = ReClan(inter.user.id, self.name.value, self.des.value, self.rating.value, self.pw.value))
+
+
+class SignUpClan(ui.Modal):
+    def __init__(self, clan: tetrio.Clan) -> None:
+        super().__init__(title="클랜가입")
+        self.clan = clan
+        self.pw = ui.TextInput(label="비밀번호", placeholder="123456789")
+        self.add_item(self.pw)
+
+    async def callback(self, inter: Interaction):
+        if self.pw.value == self.clan.pw:
+            db.User().add_clan(inter.user.id, self.clan)
+            await inter.response.send_message(embed = Embed(title = f"성공{verified}", description=f"[{self.clan.name}]에 가입을 성공함", color=0xa1dba5))
+        else:
+            await inter.response.send_message(embed = Embed(title = f"실패(505)", description=f"비밀번호가 틀림", color=0xff7033))

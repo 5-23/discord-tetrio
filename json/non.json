@@ -4,14 +4,12 @@
         "username": "5-23",
         "role": "user",
         "ts": "2023-03-10T02:13:37.989Z",
-        "badges": [
-            {
-                "id": "20tsd",
-                "label": "Cleared 40 LINES with only T-Spin Doubles",
-                "group": null,
-                "ts": "2023-04-21T12:21:17.777Z"
-            }
-        ],
+        "badges": [{
+            "id": "20tsd",
+            "label": "Cleared 40 LINES with only T-Spin Doubles",
+            "group": null,
+            "ts": "2023-04-21T12:21:17.777Z"
+        }],
         "xp": 1048986,
         "gamesplayed": 1206,
         "gameswon": 657,

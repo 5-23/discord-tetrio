@@ -21,3 +21,13 @@ class Data():
 
     avatar_img: str
     banner_img: str
+    clan: str
+
+@dataclass
+class Clan:
+    name: str
+    des: str
+    rating: int
+    members: list[int]
+    admin: int
+    pw: str

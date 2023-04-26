@@ -1,8 +1,73 @@
 {
-    "sunrint": {
-        "rating": 0,
-        "members": [
-            577266050769485844
-        ]
+    "577266050769485844": {
+        "name": "5-23",
+        "nick": "babo",
+        "discord_name": "5-23dev#9999",
+        "friend": 13,
+        "gametime": 339962,
+        "gameplayed": 1230,
+        "gamewon": 677,
+        "badges": [
+            {
+                "title": "20tsd",
+                "description": "Cleared 40 LINES with only T-Spin Doubles"
+            }
+        ],
+        "league": {
+            "rank": "a",
+            "best_rank": "a",
+            "rating": 12158,
+            "apm": 27.05,
+            "pps": 1.04,
+            "vs": 50.4
+        },
+        "40l": {
+            "time": 88,
+            "point": null,
+            "ts": "2023-04-18T14:56:01",
+            "ok": true
+        },
+        "blitz": {
+            "time": null,
+            "point": 123470,
+            "ts": "2023-04-23T08:31:31",
+            "ok": true
+        },
+        "avatar_img": "https://tetr.io/user-content/avatars/640a9251b507939b0a6ad379.jpg?rv=1681029103193",
+        "banner_img": "https://tetr.io/user-content/banners/640a9251b507939b0a6ad379.jpg?rv=1682437751238",
+        "clan": "sunrint"
+    },
+    "755218869911552082": {
+        "name": "wntjd_612",
+        "nick": "wntjd",
+        "discord_name": "wntjd#5258",
+        "friend": 5,
+        "gametime": 46330,
+        "gameplayed": 189,
+        "gamewon": 19,
+        "badges": [],
+        "league": {
+            "rank": "z",
+            "best_rank": "z",
+            "rating": -1,
+            "apm": null,
+            "pps": null,
+            "vs": null
+        },
+        "40l": {
+            "time": 140,
+            "point": null,
+            "ts": "2023-04-20T10:32:10",
+            "ok": true
+        },
+        "blitz": {
+            "time": null,
+            "point": 15272,
+            "ts": "2023-04-15T16:39:28",
+            "ok": true
+        },
+        "avatar_img": "https://tetr.io/user-content/avatars/6427dff685f1735820ad3626.jpg?rv=",
+        "banner_img": "https://tetr.io/user-content/banners/6427dff685f1735820ad3626.jpg?rv=",
+        "clan": "sunrint"
     }
 }
