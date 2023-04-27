@@ -3,13 +3,19 @@ from nextcord import Member
 from typing import Union
 import math
 import tetrio
-from .clan import *
+from .clan import Clan
 class User:
     def __init__(self) -> None:
         with open("json/info.json", "r", encoding="UTF-8") as f:
             try: self.file = json.load(f)
             except: self.file = {}
     
+    def change_clan(self, id: int, name: str):
+        self.file[str(id)]["clan"] = name
+        
+        with open("json/info.json", "w", encoding="UTF-8") as f:
+            json.dump(self.file, f, indent=4, ensure_ascii=False)
+
     def push(self, id: int,  user_nick: str, user_id: str = None) -> tuple[Union[int, str]]:
         URL = f"https://ch.tetr.io/api/users/{user_id.lower()}"
         

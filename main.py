@@ -28,7 +28,7 @@ async def refresh(inter: Interaction):
 @cli.slash_command(name="정보", description="테트리오 정보를 불러옴")
 async def info(inter: Interaction):
     try: data = db.User().get(inter.user.id)
-    except: return await inter.response.send_message(embed = Embed(title = "404(Not Founded)", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
     
     await inter.response.defer()
 
@@ -76,7 +76,7 @@ async def info(inter: Interaction):
 @cli.slash_command(name="클랜생성", description="클랜을 생성함")
 async def sign_up(inter: Interaction):
     try: data = db.User().get(inter.user.id)
-    except: return await inter.response.send_message(embed = Embed(title = "404(Not Founded)", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
     if data.clan != None:
         return await inter.response.send_message("이미 클랜에 있음")
     await inter.response.send_modal(cmp.modals.Clan("", "", "", ""))
@@ -84,10 +84,10 @@ async def sign_up(inter: Interaction):
 @cli.slash_command(name="클랜참가", description="클랜에 참가함")
 async def join_clan(inter: Interaction, name: str = SlashOption(name="클랜명", description="참가 할 클랜명")):
     try: data = db.User().get(inter.user.id).clan
-    except: return await inter.response.send_message(embed = Embed(title = "404(Not Founded)", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
     
     if data != None:
-         return await inter.response.send_message(embed = Embed(title = "300(Clan Error)", description="이미 참가한 클랜이 있음", color = 0xff7033), ephemeral = True)
+         return await inter.response.send_message(embed = Embed(title = "Clan Error", description="이미 참가한 클랜이 있음", color = 0xff7033), ephemeral = True)
     
     clan = db.Clan().get(name)
 
@@ -107,13 +107,13 @@ async def join_clan_auto(inter: Interaction, name: str):
 
     await inter.response.send_autocomplete(auto)
 
-@cli.slash_command(name="클랜랭크")
-async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", description="정렬할 옵션" , choices=["blitz", "40l"])):
+@cli.slash_command(name="클랜랭크", description="클랜에서 랭크를 보여줌")
+async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", description="정렬할 옵션" , choices=["blitz", "40l", "tetra league"])):
     try: data = db.User().get(inter.user.id).clan
-    except: return await inter.response.send_message(embed = Embed(title = "404(Not Founded)", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
     
     if data == None:
-        return await inter.response.send_message(embed = Embed(title = "300(Clan Error)", description="클랜에 가입해야함", color = 0xff7033))
+        return await inter.response.send_message(embed = Embed(title = "Clan Error", description="클랜에 가입해야함", color = 0xff7033))
     
     await inter.response.defer()
 
@@ -128,10 +128,12 @@ async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", 
             value = (user.l40.time, f"{int(user.l40.time/60)}분 {int(user.l40.time%60)}초", user)
         
         
-        if option == "blitz":
+        elif option == "blitz":
             ok = user.blitz.ok
             value = (-user.blitz.point, f"{user.blitz.point:,}점", user)
-
+        else:
+            ok = user.league.rank != "z"
+            value = (-user.league.rating, f"{emojis.ranks[user.league.rank]}{user.league.rating:,}TL", user)
 
         if ok:
             arr.append(value)
@@ -146,6 +148,35 @@ async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", 
 
     await inter.followup.send(embed = embed, view=cmp.buttons.RankBtn(arr))
 
+
+@cli.slash_command(name="클랜수정", description="클랜정보 수정")
+async def change_clan(inter: Interaction):
+    try: data = db.User().get(inter.user.id)
+    except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    
+    if data.clan == None:
+        return await inter.response.send_message(embed = Embed(title = "Not Founded", description="클랜이 없음", color = 0xff7033), ephemeral = True)
+    clan = db.Clan().get(data.clan)
+    
+    if clan.admin != inter.user.id:
+        return await inter.response.send_message(embed = Embed(title="Not Permission", description="너 어드민 아님", color=0xff7033), ephemeral=True)
+    
+    await inter.response.send_modal(cmp.modals.ClanChange(clan))
+
+
+@cli.slash_command(name="클랜탈퇴", description="클랜에서 나감")
+async def leave_clan(inter: Interaction):
+    try: data = db.User().get(inter.user.id)
+    except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    
+    if data.clan == None:
+        return await inter.response.send_message(embed = Embed(title = "Not Founded", description="클랜이 없음", color = 0xff7033), ephemeral = True)
+    clan = db.Clan().get(data.clan)
+    
+    if clan.admin == inter.user.id:
+        return await inter.response.send_message(embed = Embed(title="Not Permission", description="너 어드민임", color=0xff7033), ephemeral=True)
+    db.Clan().delete(db.User, clan.name)
+    await inter.response.send_message(embed = Embed(title = "탈퇴 성공!", description = f"[{clan.name}]클랜을 성공적으로 변경", color=0xa1dba5))
 
 
 

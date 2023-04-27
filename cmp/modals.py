@@ -42,7 +42,7 @@ class Clan(ui.Modal):
     async def callback(self, inter: Interaction) -> None:
         status = db.Clan().push(inter.user.id, self.name.value, self.des.value, self.rating.value, self.pw.value)
         if status[0] == 200:
-            return await inter.response.send_message(embed = Embed(title = "생성 성공!", description = f"[{self.name.value}]클랜을 성공적으로 만듬"))
+            return await inter.response.send_message(embed = Embed(title = "생성 성공!", description = f"[{self.name.value}]클랜을 성공적으로 만듬", color=0xa1dba5))
         await inter.response.send_message(embed=Embed(title = f"실패({status[0]})", description=status[1]), view = ReClan(inter.user.id, self.name.value, self.des.value, self.rating.value, self.pw.value))
 
 
@@ -59,3 +59,32 @@ class SignUpClan(ui.Modal):
             await inter.response.send_message(embed = Embed(title = f"성공{verified}", description=f"[{self.clan.name}]에 가입을 성공함", color=0xa1dba5))
         else:
             await inter.response.send_message(embed = Embed(title = f"실패(505)", description=f"비밀번호가 틀림", color=0xff7033))
+
+
+
+class ClanChange(ui.Modal):
+    def __init__(self, clan: tetrio.Clan) -> None:
+        super().__init__(title = "클랜수정")
+        self.clan = clan
+
+        self.name = ui.TextInput(label="이름", min_length=1, max_length=30, placeholder = clan.name, default_value=clan.name)
+        self.des = ui.TextInput(label="설명", min_length=1, placeholder=clan.des, default_value=clan.des, style=TextInputStyle.paragraph)
+        
+        self.rating = ui.TextInput(label="레이팅 조건", min_length=1, placeholder=str(clan.rating), default_value=str(clan.rating))
+        self.pw = ui.TextInput(label="비밀번호(선택)", min_length=1, default_value=clan.pw, required=False, placeholder=clan.pw)
+
+        self.add_item(self.name)
+        self.add_item(self.des)
+        self.add_item(self.rating)
+        self.add_item(self.pw)
+
+    async def callback(self, inter: Interaction) -> None:
+        try:
+            data = db.Clan().get(self.name.value)
+            if data.admin != inter.user.id:
+                return await inter.response.send_message(embed=Embed(title="변경 실패", description="중복된 이름", color=0xff7033))
+        except: ...
+        db.Clan().change(db.User, self.clan.name, inter.user.id, self.name.value, self.des.value, self.rating.value, self.pw.value, self.clan.members)
+        await inter.response.send_message(embed = Embed(title = "변경 성공!", description = f"[{self.name.value}]클랜을 성공적으로 변경", color=0xa1dba5))
+
+
