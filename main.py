@@ -125,7 +125,7 @@ async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", 
         if option == "40l":
             value = (user.l40.time, f"{int(user.l40.time/60)}분 {int(user.l40.time%60)}초", user)
             if not user.l40.ok:
-                value = (user.l40.time, f"NaN", user)
+                value = (99999, f"NaN", user)
 
         
         elif option == "blitz":
