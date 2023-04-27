@@ -23,7 +23,7 @@ class Clan:
     
     def change(self, user, org_name: str, admin: int , name: str, des: str,  rating: str, pw: str, members: list[int]):
         del self.file[org_name]
-        self.push(admin, name, des, rating, pw)
+        self.push(admin, name, des, rating, pw, members)
 
         for member in members:
             user().change_clan(member, name)
@@ -32,7 +32,7 @@ class Clan:
             json.dump(self.file, f, indent=4, ensure_ascii=False)
     
 
-    def push(self, admin: int , name: str, des: str,  rating: str, pw: str = None) -> tuple[int, str]:
+    def push(self, admin: int , name: str, des: str,  rating: str, pw: str = None, members: list[int] = None) -> tuple[int, str]:
         with open("json/info.json", "r", encoding="UTF-8") as f:j = json.load(f)
         j[str(admin)]["clan"] = name
         
@@ -44,12 +44,13 @@ class Clan:
         if self.file.get(name, 0): return (500, "이미있는 이름")
         if pw == "":
             pw = None
-
+        if members == None:
+            members = [admin]
         self.file[name] = {
             "name": name,
             "des": des,
             "rating": int(rating),
-            "members": [admin],
+            "members": members,
             "admin": admin,
             "pw": pw,
         }

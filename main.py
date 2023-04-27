@@ -180,4 +180,35 @@ async def leave_clan(inter: Interaction):
 
 
 
+@cli.slash_command(name="클랜정보", description="클랜 정보를 보여줌")
+async def clan_info(inter: Interaction, name: str = SlashOption(name="클랜명", description="참가 할 클랜명", required=False, default=None)):
+    if name == None:
+        try: name = db.User().get(inter.user.id).clan
+        except: return await inter.response.send_message(embed = Embed(title = "Not Founded", description="가입을 먼저 해야함", color = 0xff7033), ephemeral = True)
+    
+    if name == None:
+         return await inter.response.send_message(embed = Embed(title = "Clan Error", description="참가한 클랜이 없음", color = 0xff7033), ephemeral = True)
+    
+    clan = db.Clan().get(name)
+    user = db.User()
+    embeds = [Embed(title = f"[{clan.name}]클랜", color=0x3366ff)]
+    rating = 0
+    for member in clan.members:
+        if user.get(member).league.rating != None:
+            rating += user.get(member).league.rating
+    embeds.append(Embed(title="레이팅합", description=f"{rating}TL", color=0x3366ff))
+    embeds.append(Embed(title="설명", description=clan.des, color=0x3366ff))
+    embeds.append(Embed(title="멤버수", description=len(clan.members), color=0x3366ff))
+    await inter.response.send_message(embeds = embeds)
+    
+@clan_info.on_autocomplete("name")
+async def clan_info_auto(inter: Interaction, name: str):
+    auto = ["입력"]
+    if name != "":
+        auto = [i for i in db.Clan().file if name.lower() in i]
+        if auto == []:
+            auto = ["검색결과 없음"]
+
+    await inter.response.send_autocomplete(auto)
+
 cli.run(open(".token").read())
