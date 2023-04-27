@@ -7,8 +7,7 @@
         "gametime": 342954,
         "gameplayed": 1250,
         "gamewon": 690,
-        "badges": [
-            {
+        "badges": [{
                 "title": "20tsd",
                 "description": "Cleared 40 LINES with only T-Spin Doubles"
             },
@@ -29,13 +28,13 @@
             "time": 88,
             "point": null,
             "ts": "2023-04-18T14:56:01",
-            "ok": true
+            "ok": false
         },
         "blitz": {
             "time": null,
             "point": 123470,
             "ts": "2023-04-23T08:31:31",
-            "ok": true
+            "ok": false
         },
         "avatar_img": "https://tetr.io/user-content/avatars/640a9251b507939b0a6ad379.jpg?rv=1681029103193",
         "banner_img": "https://tetr.io/user-content/banners/640a9251b507939b0a6ad379.jpg?rv=1682437751238",

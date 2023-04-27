@@ -123,19 +123,24 @@ async def clanrank(inter: Interaction, option: str = SlashOption(name="옵션", 
     for member in members:
         user = db.User().get(member)
         if option == "40l":
-            ok = user.l40.ok
             value = (user.l40.time, f"{int(user.l40.time/60)}분 {int(user.l40.time%60)}초", user)
-        
+            if not user.l40.ok:
+                value = (user.l40.time, f"NaN", user)
+
         
         elif option == "blitz":
-            ok = user.blitz.ok
             value = (-user.blitz.point, f"{user.blitz.point:,}점", user)
+            if not user.blitz.ok:
+                value = (1, f"NaN점", user)
         else:
-            ok = user.league.rank != "z"
-            value = (-user.league.rating, f"{emojis.ranks[user.league.rank]}{user.league.rating:,}TL", user)
+            value = (-user.league.rating, f"{emojis.ranks[user.league.rank]} **{user.league.rating:,}**TL", user)
+            if user.league.rank == "z":
+                value = (0, f"{emojis.ranks[user.league.rank]} **0**TL", user)
+                
+            ok = True
 
-        if ok:
-            arr.append(value)
+        # if ok:
+        arr.append(value)
     
     arr.sort(key=lambda x: x[0])
     
@@ -247,5 +252,8 @@ async def clan_info_auto(inter: Interaction, name: str):
             auto = ["검색결과 없음"]
 
     await inter.response.send_autocomplete(auto)
+
+
+
 
 cli.run(open(".token").read())
