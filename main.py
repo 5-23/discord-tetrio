@@ -2,8 +2,7 @@ from nextcord import *
 import db
 import cmp
 from cmp import emojis
-INTENTS = Intents().all()
-cli = Client(intents = INTENTS)
+cli = Client(activity=Game("TETR.IO"))
 
 import datetime, time, math
 
@@ -64,7 +63,7 @@ async def info(inter: Interaction):
         embeds[len(embeds)-1].add_field(name="최고랭크", value=f"{emojis.ranks[data.league.best_rank]}")
         embeds[len(embeds)-1].add_field(name="apm (Attack Per Minute)", value=f"{data.league.apm}", inline = False)
         embeds[len(embeds)-1].add_field(name="pps (Pieces Per Seconds)", value=f"{data.league.pps}")
-        embeds[len(embeds)-1].add_field(name="vs (VerSus)", value=f"{data.league.vs}")
+        embeds[len(embeds)-1].add_field(name="vs (VerSus)", value=f"{data.league.vs}%")
     
     
     
@@ -191,16 +190,54 @@ async def clan_info(inter: Interaction, name: str = SlashOption(name="클랜명"
     
     clan = db.Clan().get(name)
     user = db.User()
-    embeds = [Embed(title = f"[{clan.name}]클랜", color=0x3366ff)]
-    rating = 0
+    embeds = [
+        Embed(title = f"[{clan.name}]클랜", color=0x3366ff),
+        Embed(title = f"레이팅", color=0x3366ff),
+        Embed(title = f"솔로", color=0x3366ff),
+        Embed(title = f"평균 속도", color=0x3366ff)
+    ]
+    rating = [0, 0]
+    l40 = [0, 0]
+    blitz = [0, 0]
+    league = 0
+    spd = [0, 0, 0]
     for member in clan.members:
         if user.get(member).league.rating != None:
-            rating += user.get(member).league.rating
-    embeds.append(Embed(title="레이팅합", description=f"{rating}TL", color=0x3366ff))
-    embeds.append(Embed(title="설명", description=clan.des, color=0x3366ff))
-    embeds.append(Embed(title="멤버수", description=len(clan.members), color=0x3366ff))
-    await inter.response.send_message(embeds = embeds)
+            rating[0] += user.get(member).league.rating
+            rating[1] += 1
+        
+        if user.get(member).l40.ok:
+            l40[0] += user.get(member).l40.time
+            l40[1] += 1
+
+        if user.get(member).blitz.ok:
+            blitz[0] += user.get(member).blitz.point
+            blitz[1] += 1
+
+        if user.get(member).league.rank != "z":
+            league += 1
+            spd[0] += user.get(member).league.apm
+            spd[1] += user.get(member).league.pps
+            spd[2] += user.get(member).league.vs
+
+    embeds[0].add_field(name="설명", value=clan.des, inline=False)
+    embeds[0].add_field(name="멤버수", value=len(clan.members), inline=False)
     
+    embeds[1].add_field(name="합", value=f"**{rating[0]:,}**TL", inline=False)
+    embeds[1].add_field(name="평균", value=f"**{rating[0]/rating[1]:,.2f}**TL", inline=False)
+    embeds[1].add_field(name="제한", value=f"**{clan.rating:,}**TL", inline=False)
+    
+    embeds[2].add_field(name="blitz합", value=f"**{blitz[0]:,}**B", inline=False)
+    embeds[2].add_field(name="blitz 평균", value=f"**{blitz[0]/blitz[1]:,.2f}**B", inline=False)
+    embeds[2].add_field(name="40l합", value=f"{int(l40[0]/60)}분 {int(l40[0]%60)}초", inline=False)
+    embeds[2].add_field(name="40l 평균", value=f"{int(l40[0]/l40[1]/60)}분 {int(l40[0]/l40[1]%60)}초", inline=False)
+    
+    embeds[3].add_field(name="apm(VerSus)", value=f"{spd[0]/league:.2f}", inline=False)
+    embeds[3].add_field(name="pps(Pieces Per Seconds)", value=f"{spd[1]/league:.2f}", inline=False)
+    embeds[3].add_field(name="vs(VerSus)", value=f"{spd[2]/league:.2f}%", inline=False)
+    
+    await inter.response.send_message(embeds = embeds)
+
 @clan_info.on_autocomplete("name")
 async def clan_info_auto(inter: Interaction, name: str):
     auto = ["입력"]

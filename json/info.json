@@ -4,13 +4,17 @@
         "nick": "babo",
         "discord_name": "5-23dev#9999",
         "friend": 13,
-        "gametime": 339962,
-        "gameplayed": 1230,
-        "gamewon": 677,
+        "gametime": 342954,
+        "gameplayed": 1250,
+        "gamewon": 690,
         "badges": [
             {
                 "title": "20tsd",
                 "description": "Cleared 40 LINES with only T-Spin Doubles"
+            },
+            {
+                "title": "secretgrade",
+                "description": "Achieved the full Secret Grade"
             }
         ],
         "league": {
