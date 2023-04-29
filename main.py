@@ -58,7 +58,7 @@ async def info(inter: Interaction):
 
     if data.league.rank != 'z':
         embeds.append(Embed(title = f"Tetra League", color=0xa1dba5))
-        embeds[len(embeds)-1].add_field(name="레이팅", value=f"**{data.league.rating}**TR", inline = False)
+        embeds[len(embeds)-1].add_field(name="레이팅", value=f"**{data.league.rating:,}**TR", inline = False)
         embeds[len(embeds)-1].add_field(name="랭크", value=f"{emojis.ranks[data.league.rank]}")
         embeds[len(embeds)-1].add_field(name="최고랭크", value=f"{emojis.ranks[data.league.best_rank]}")
         embeds[len(embeds)-1].add_field(name="apm (Attack Per Minute)", value=f"{data.league.apm}", inline = False)
